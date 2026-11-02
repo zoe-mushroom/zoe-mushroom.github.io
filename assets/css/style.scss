@@ -1,0 +1,16 @@
+---
+---
+
+@import "minima";
+
+/* 中文文章正文首行缩进两个汉字 */
+.post-content p {
+  text-indent: 2em;
+  line-height: 1.9;
+  margin-bottom: 1.2em;
+}
+
+/* 避免图片所在段落缩进 */
+.post-content p:has(img) {
+  text-indent: 0;
+}
