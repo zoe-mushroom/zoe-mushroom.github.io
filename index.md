@@ -3,151 +3,76 @@ layout: default
 title: 首页
 ---
 
-<style>
-.zoe-hero {
-  text-align: center;
-  padding: 55px 12px 45px;
-}
-.zoe-hero h1 {
-  font-size: 2.1rem;
-  line-height: 1.5;
-  font-weight: 600;
-}
-.zoe-hero p {
-  color: #777;
-  line-height: 1.9;
-}
-.zoe-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin: 25px 0 45px;
-}
-.zoe-card {
-  border: 1px solid #e8e8e8;
-  border-radius: 12px;
-  padding: 23px 18px;
-  color: inherit !important;
-  text-decoration: none !important;
-  transition: 0.2s;
-}
-.zoe-card:hover {
-  box-shadow: 0 5px 20px rgba(0,0,0,0.07);
-  transform: translateY(-3px);
-}
-.zoe-card h2 {
-  font-size: 1.3rem;
-  margin: 15px 0 10px;
-}
-.zoe-card p {
-  font-size: 0.9rem;
-  color: #777;
-  line-height: 1.8;
-}
-.zoe-icon { font-size: 2rem; }
-.zoe-articles { margin: 35px 0; }
-.zoe-articles h2 { font-size: 1.3rem; }
-.zoe-articles ul {
-  list-style: none;
-  margin-left: 0;
-}
-.zoe-articles li {
-  padding: 11px 0;
-  border-bottom: 1px solid #eee;
-}
-.zoe-date {
-  color: #999;
-  font-size: 0.85rem;
-  margin-right: 15px;
-}
-.zoe-more {
-  display: inline-block;
-  margin-top: 15px;
-}
-@media (max-width: 650px) {
-  .zoe-grid { grid-template-columns: 1fr; }
-  .zoe-hero h1 { font-size: 1.6rem; }
-}
-</style>
+<div class="zoe-archive">
+  <header class="archive-intro">
+    <p class="archive-eyebrow">文字 · 阅读 · 生活</p>
+    <h1>记录生活，慢慢成长。</h1>
+    <p>在这里，留下日常的片段、阅读的思考和成长的足迹。</p>
+  </header>
 
-<div class="zoe-hero">
-  <h1>记录生活，保持阅读，持续成长。</h1>
-  <p>
-    一个记录日常、分享阅读、探索自我的小小空间。<br>
-    在这里，留下时间走过的痕迹。
-  </p>
-</div>
+  <nav class="archive-filters" aria-label="文章分类">
+    <button type="button" data-category="all" aria-pressed="true">全部文章</button>
+    <button type="button" data-category="essays" aria-pressed="false">日常随笔</button>
+    <button type="button" data-category="books" aria-pressed="false">读书笔记</button>
+    <button type="button" data-category="growth" aria-pressed="false">学习成长</button>
+  </nav>
+  <label class="archive-search">
+    <span>搜索文章</span>
+    <input id="article-search" type="search" placeholder="输入文章标题…" autocomplete="off">
+  </label>
+  <p class="archive-count" aria-live="polite">共 {{ site.posts.size }} 篇文章<span id="visible-count"></span></p>
 
-<div class="zoe-grid">
-
-  <a href="{{ '/essays/' | relative_url }}" class="zoe-card">
-    <div class="zoe-icon">☕</div>
-    <h2>日常随笔</h2>
-    <p>生活里的细碎时刻，值得被认真记录。</p>
-    <span>探索更多 →</span>
-  </a>
-
-  <a href="{{ '/books/' | relative_url }}" class="zoe-card">
-    <div class="zoe-icon">📖</div>
-    <h2>读书笔记</h2>
-    <p>在书页之间，与不同的思想相遇。</p>
-    <span>探索更多 →</span>
-  </a>
-
-  <a href="{{ '/growth/' | relative_url }}" class="zoe-card">
-    <div class="zoe-icon">🌱</div>
-    <h2>学习成长</h2>
-    <p>保持好奇，慢慢成为更好的自己。</p>
-    <span>探索更多 →</span>
-  </a>
-
-</div>
-
-<div class="zoe-articles">
-  <h2>☕ 日常随笔</h2>
-  {% assign essays = site.posts | where_exp: "post", "post.categories contains 'essays'" %}
-  <ul>
-  {% for post in essays limit:3 %}
-    <li>
-      <span class="zoe-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-  {% else %}
-    <li>暂无文章，等待新的故事。</li>
+  {% assign posts_by_year = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+  {% for year in posts_by_year %}
+  <details class="archive-year" open>
+    <summary>{{ year.name }} <span class="year-count">{{ year.items.size }} 篇</span></summary>
+    <ul class="archive-list">
+      {% for post in year.items %}
+      <li class="archive-row" data-categories="{{ post.categories | jsonify | escape }}">
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%m.%d" }}</time>
+        <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+        <span class="archive-category">{% if post.categories contains 'essays' %}日常随笔{% elsif post.categories contains 'books' %}读书笔记{% elsif post.categories contains 'growth' %}学习成长{% else %}其他{% endif %}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </details>
   {% endfor %}
-  </ul>
-  <a class="zoe-more" href="{{ '/essays/' | relative_url }}">查看全部随笔 →</a>
+  <p id="archive-empty" {% if site.posts.size > 0 %}hidden{% endif %}>这里还没有匹配的文章，换个分类或关键词试试。</p>
 </div>
 
-<div class="zoe-articles">
-  <h2>📖 读书笔记</h2>
-  {% assign books = site.posts | where_exp: "post", "post.categories contains 'books'" %}
-  <ul>
-  {% for post in books limit:3 %}
-    <li>
-      <span class="zoe-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-  {% else %}
-    <li>暂无文章，下一本好书正在路上。</li>
-  {% endfor %}
-  </ul>
-  <a class="zoe-more" href="{{ '/books/' | relative_url }}">查看全部读书笔记 →</a>
-</div>
-
-<div class="zoe-articles">
-  <h2>🌱 学习成长</h2>
-  {% assign growth = site.posts | where_exp: "post", "post.categories contains 'growth'" %}
-  <ul>
-  {% for post in growth limit:3 %}
-    <li>
-      <span class="zoe-date">{{ post.date | date: "%Y-%m-%d" }}</span>
-      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-    </li>
-  {% else %}
-    <li>暂无文章，成长从今天开始。</li>
-  {% endfor %}
-  </ul>
-  <a class="zoe-more" href="{{ '/growth/' | relative_url }}">查看全部成长记录 →</a>
-</div>
-  
+<script>
+(() => {
+  const root = document.querySelector('.zoe-archive');
+  const buttons = [...root.querySelectorAll('[data-category]')];
+  const rows = [...root.querySelectorAll('.archive-row')];
+  const years = [...root.querySelectorAll('.archive-year')];
+  const input = root.querySelector('#article-search');
+  let category = 'all';
+  function update() {
+    const query = input.value.trim().toLocaleLowerCase();
+    let count = 0;
+    rows.forEach(row => {
+      const categories = JSON.parse(row.dataset.categories);
+      const match = (category === 'all' || categories.includes(category)) &&
+        row.querySelector('a').textContent.toLocaleLowerCase().includes(query);
+      row.hidden = !match;
+      if (match) count++;
+    });
+    years.forEach(year => {
+      const visible = [...year.querySelectorAll('.archive-row')].filter(row => !row.hidden).length;
+      year.hidden = visible === 0;
+      year.querySelector('.year-count').textContent = visible + ' 篇';
+      if (query || category !== 'all') year.open = true;
+    });
+    root.querySelector('#visible-count').textContent = ' · 当前显示 ' + count + ' 篇';
+    root.querySelector('#archive-empty').hidden = count !== 0;
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.category === category)));
+  }
+  buttons.forEach(button => button.addEventListener('click', () => {
+    category = button.dataset.category;
+    update();
+  }));
+  input.addEventListener('input', update);
+  update();
+})();
+</script>
