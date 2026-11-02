@@ -2,8 +2,8 @@
 layout: post
 title: "你好，世界！我的第一篇博客"
 date: 2026-11-02 12:00:00 +0800
-categories: [随笔]
-tags: [写作, 个人博客]
+categories: [growth]
+tags: [测试]
 ---
 
 # 你好，世界！
