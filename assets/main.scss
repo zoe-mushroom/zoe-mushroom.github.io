@@ -1,0 +1,16 @@
+---
+---
+
+@import "minima";
+
+/* 文章正文：首行缩进约两个汉字 */
+article.h-entry .post-content > p {
+  text-indent: 2em;
+  line-height: 1.9;
+  margin-bottom: 1.2em;
+}
+
+/* 图片所在段落不缩进 */
+article.h-entry .post-content > p:has(img) {
+  text-indent: 0;
+}
