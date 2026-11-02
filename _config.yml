@@ -7,8 +7,13 @@ timezone: Asia/Shanghai
 
 theme: minima
 
+
 header_pages:
+  - essays.md
+  - books.md
+  - growth.md
   - about.md
+  
 
 plugins:
   - jekyll-feed
