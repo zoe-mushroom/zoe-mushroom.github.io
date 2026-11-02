@@ -1,36 +1,20 @@
-
 ---
 layout: page
 title: About
 permalink: /about/
 ---
 
-# 关于我 | About Me
+# 关于我
 
-你好，欢迎来到我的个人博客！
+你好，欢迎来到 Zoe's Blog！
 
-这里是我记录思考、分享知识和整理生活体验的小空间。
-
-我相信持续学习、独立思考和真诚分享的价值，希望通过写作记录自己的成长，也与更多有趣的人交流。
+这是我的个人博客，用来记录阅读、学习、生活和独立思考。
 
 ## 我会在这里分享
 
-- 📚 阅读、学习与知识笔记
-- 🌏 世界观察与个人思考
-- 💡 工具、技术与效率提升
-- 🌱 生活体验与成长记录
+- 阅读与知识笔记
+- 个人观点与生活观察
+- 技术与效率工具
+- 值得记录的经历
 
-## About This Blog
-
-Welcome to my personal blog!
-
-This is a space for sharing ideas, learning experiences,
-and reflections on life.
-
-I believe in lifelong learning, independent thinking,
-and the value of sharing knowledge.
-
----
-
-*Thanks for visiting!*
-  
+感谢你的访问！
